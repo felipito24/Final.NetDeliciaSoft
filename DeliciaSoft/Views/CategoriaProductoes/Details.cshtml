@@ -1,0 +1,58 @@
+﻿@model DeliciaSoft.Models.CategoriaProducto
+
+@{
+    ViewData["Title"] = "Detalles de Categoría";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-gradient-primary text-white py-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-info-circle fa-2x me-3"></i>
+                <div>
+                    <h1 class="fs-4 mb-0">Detalles de Categoría</h1>
+                    <p class="mb-0 small">Información completa de la categoría</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body pt-4">
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.NombreCategoria)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.NombreCategoria)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.DescripcionProducto)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.DescripcionProducto)
+                </dd>
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Estado)
+                </dt>
+                <dd class="col-sm-9">
+                    @if (Model.Estado == true)
+                    {
+                        <span class="badge bg-success">Activo</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inactivo</span>
+                    }
+                </dd>
+            </dl>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Regresar
+                </a>
+                <a asp-action="Edit" asp-route-id="@Model?.IdCategoriaProducto" class="btn btn-primary">
+                    <i class="fas fa-edit me-2"></i>Editar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

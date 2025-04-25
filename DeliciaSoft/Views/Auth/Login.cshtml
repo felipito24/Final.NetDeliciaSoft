@@ -1,0 +1,79 @@
+﻿@model DeliciaSoft.ViewModels.Auth.LoginViewModel
+
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+    Layout = "_Layout";
+}
+
+<div class="container my-5">
+    <div class="row g-0">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-lg h-100">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <img src="/img/logo.png" alt="DeliciaSoft Logo" style="max-height: 60px;" class="mb-3" />
+                        <h3 class="fw-bold">INICIAR SESIÓN</h3>
+                    </div>
+
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        </div>
+                    }
+
+                    <form asp-action="Login" method="post" class="mt-4">
+                        @if (!string.IsNullOrEmpty(Model.ReturnUrl))
+                        {
+                            <input type="hidden" asp-for="ReturnUrl" />
+                        }
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Correo" class="form-control" placeholder="nombre@ejemplo.com" autofocus />
+                            <label asp-for="Correo">Correo Electrónico</label>
+                            <span asp-validation-for="Correo" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Contrasena" class="form-control" type="password" placeholder="Contraseña" />
+                            <label asp-for="Contrasena">Contraseña</label>
+                            <span asp-validation-for="Contrasena" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input asp-for="RecordarMe" class="form-check-input" />
+                            <label asp-for="RecordarMe" class="form-check-label">Recordarme</label>
+                        </div>
+
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn btn-primary py-2">INICIAR SESIÓN</button>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <a class="text-decoration-none" asp-action="Registro">¿No tienes cuenta? Regístrate</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="auth-banner h-100">
+                <h2>INICIA SESIÓN</h2>
+                <p>¡Bienvenido a Delicias Darsy! Endulza tu día iniciando sesión y descubre el sabor que alegra tus momentos.</p>
+                <a href="#" class="auth-banner-btn">REGÍSTRATE</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

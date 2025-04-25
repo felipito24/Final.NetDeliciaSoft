@@ -1,0 +1,16 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@functions {
+    public static bool TienePermiso(HttpContext httpContext, string modulo, string accion)
+    {
+        if (httpContext.User == null || !httpContext.User.Identity.IsAuthenticated)
+        {
+            return false;
+        }
+
+        return httpContext.User.HasClaim(c =>
+            c.Type == "Permission" &&
+            c.Value == $"{modulo}.{accion}");
+    }
+}

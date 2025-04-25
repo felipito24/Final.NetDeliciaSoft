@@ -1,0 +1,21 @@
+﻿@model List<DeliciaSoft.Models.ProductoCompra>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Unidad</th>
+            <th>Cantidad</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.NombreProducto</td>
+                <td>@item.UnidadMedida</td>
+                <td><input type="number" name="Cantidad_@item.IdProducto" value="1" min="1" class="form-control" /></td>
+            </tr>
+        }
+    </tbody>
+</table>

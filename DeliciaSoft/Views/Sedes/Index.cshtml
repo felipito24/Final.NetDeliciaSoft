@@ -1,0 +1,101 @@
+﻿@model IEnumerable<DeliciaSoft.Models.Sede>
+
+@{
+    ViewData["Title"] = "Sedes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid p-3">
+    <div class="card shadow">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <img src="~/img/logo.png" alt="Logo" style="width: 60px; height: 60px;" class="me-2">
+                <h4 class="mb-0">Listado de Sedes</h4>
+            </div>
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Crear Nueva Sede
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <input type="text" id="buscador" class="form-control" placeholder="Buscar por nombre..." />
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-striped" id="tabla-sedes">
+                    <thead class="table-light">
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.First().Nombre)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Direccion)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Telefono)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Horarios)</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var claseFila = item.Estado ? "" : "text-muted";
+                            <tr class="@claseFila">
+                                <td class="nombre-sede">@Html.DisplayFor(modelItem => item.Nombre)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Direccion)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Telefono)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Horarios)</td>
+                                <td>
+                                    <form asp-action="ToggleEstado" asp-route-id="@item.IdSede" method="post" class="d-inline">
+                                        <button type="submit" class="badge border-0 @(item.Estado ? "bg-success" : "bg-secondary") estado-toggle" style="cursor:pointer;">
+                                            @(item.Estado ? "Activo" : "Inactivo")
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Edit" asp-route-id="@item.IdSede" class="btn btn-sm btn-warning">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.IdSede" class="btn btn-sm btn-info">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.IdSede" class="btn btn-sm btn-danger">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#buscador').on('input', function () {
+                var valor = $(this).val().toLowerCase();
+                $('#tabla-sedes tbody tr').filter(function () {
+                    $(this).toggle($(this).find('.nombre-sede').text().toLowerCase().indexOf(valor) > -1);
+                });
+            });
+
+            $("a[asp-action='Delete']").on("click", function (event) {
+                var confirmado = confirm("¿Está seguro que desea eliminar esta sede?");
+                if (!confirmado) {
+                    event.preventDefault();
+                }
+            });
+
+            $('.estado-toggle').on('click', function (e) {
+                var confirmado = confirm("¿Está seguro que desea cambiar el estado de esta sede?");
+                if (!confirmado) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+}

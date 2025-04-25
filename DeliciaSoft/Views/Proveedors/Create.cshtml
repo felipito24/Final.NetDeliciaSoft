@@ -1,0 +1,137 @@
+﻿@model DeliciaSoft.Models.Proveedor
+
+@{
+    ViewData["Title"] = "Crear Proveedor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-gradient-primary text-white py-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-user-tie fa-2x me-3"></i>
+                <div>
+                    <h1 class="fs-4 mb-0">Crear Proveedor</h1>
+                    <p class="mb-0 small">Complete el formulario para registrar un nuevo proveedor</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body pt-4">
+            <form asp-action="Create" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-header bg-light">
+                                <i class="fas fa-info-circle me-2"></i> Información del Proveedor
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="TipoProveedor" class="form-label">Tipo de Proveedor</label>
+                                    <select asp-for="TipoProveedor" class="form-select" required>
+                                        <option value="">-- Seleccione una opción --</option>
+                                        <option value="Persona Jurídica">Persona Jurídica</option>
+                                        <option value="Persona Natural">Persona Natural</option>
+                                    </select>
+                                    <span asp-validation-for="TipoProveedor" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Correo" class="form-label">Correo Electrónico</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        <input asp-for="Correo" class="form-control" placeholder="Ingrese el correo electrónico" />
+                                    </div>
+                                    <span asp-validation-for="Correo" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Celular" class="form-label">Celular</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        <input asp-for="Celular" class="form-control" placeholder="Ingrese el celular del proveedor" />
+                                    </div>
+                                    <span asp-validation-for="Celular" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Direccion" class="form-label">Dirección</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                        <input asp-for="Direccion" class="form-control" placeholder="Ingrese la dirección del proveedor" />
+                                    </div>
+                                    <span asp-validation-for="Direccion" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Estado" class="form-label">Estado</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-check-circle"></i></span>
+                                        <input asp-for="Estado" class="form-control" placeholder="Ingrese el estado del proveedor" />
+                                    </div>
+                                    <span asp-validation-for="Estado" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="fas fa-save me-2"></i>Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            const hasErrors = $('.validation-summary-errors ul li').length > 0;
+            if (hasErrors) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Campos inválidos',
+                    text: 'Por favor, revisa los datos ingresados antes de continuar.'
+                });
+            }
+
+            $('form').submit(function (e) {
+                e.preventDefault();
+
+                if ($('span.text-danger').filter(function () { return $(this).text().length > 0; }).length > 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error de validación',
+                        text: 'Aún hay errores en el formulario.'
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    title: '¿Deseas guardar este proveedor?',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Sí, guardar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit();
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,187 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid dashboard-container">
+    <h1 class="mb-4">Dashboard</h1>
+
+    <!-- Resumen -->
+    <div class="row mb-4">
+        <!-- Ventas Totales -->
+        <div class="col-md-6">
+            <div class="card summary-card">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas totales</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0">$ @string.Format("{0:N0}", ViewBag.VentasTotales)</h2>
+                        <div class="trend-indicator up">
+                            <i class="bi bi-arrow-up"></i> 6.4
+                        </div>
+                    </div>
+                    <div class="progress mt-2">
+                        <div class="progress-bar bg-pink" role="progressbar" style="width: 80%"></div>
+                    </div>
+                    <div class="text-muted mt-2">80/Mes</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gastos Totales -->
+        <div class="col-md-6">
+            <div class="card summary-card">
+                <div class="card-body">
+                    <h5 class="card-title">Gastos totales</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0">$ @string.Format("{0:N0}", ViewBag.GastosTotales)</h2>
+                        <div class="trend-indicator down">
+                            <i class="bi bi-arrow-down"></i> 4.6
+                        </div>
+                    </div>
+                    <div class="progress mt-2">
+                        <div class="progress-bar bg-yellow" role="progressbar" style="width: 80%"></div>
+                    </div>
+                    <div class="text-muted mt-2">80/Mes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos y Ventas recientes -->
+    <div class="row mb-4">
+        <!-- Ventas Diarias -->
+        <div class="col-md-7">
+            <div class="card chart-card">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas diarias</h5>
+                    <div class="chart-container">
+                        <canvas id="ventasDiariasChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ventas en tiempo real -->
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas en tiempo real</h5>
+                    <div class="real-time-sales">
+                        @foreach (var venta in ViewBag.VentasRecientes)
+                        {
+                            <div class="sale-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <p class="mb-0 fw-bold">Venta #@venta.IdVenta</p>
+                                        <p class="text-muted mb-0">@venta.ClienteNombre</p>
+                                        <p class="text-muted small mb-0">@(venta.FechaVenta != null ? venta.FechaVenta.ToString("dd/MM/yyyy") : "")</p>
+                                    </div>
+                                    <div class="sale-amount">
+                                        $@string.Format("{0:N0}", venta.Total)
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ventas Mensuales -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card chart-card">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas mensuales</h5>
+                    <div class="chart-container">
+                        <canvas id="ventasMensualesChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ventasDiariasData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.VentasDiarias));
+            const ventasMensualesData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.VentasMensuales));
+
+            // Ventas Diarias
+            const ctxDiarias = document.getElementById('ventasDiariasChart').getContext('2d');
+            new Chart(ctxDiarias, {
+                type: 'bar',
+                data: {
+                    labels: ventasDiariasData.map(item => item.Fecha),
+                    datasets: [{
+                        label: 'Ventas',
+                        data: ventasDiariasData.map(item => item.VentasDia),
+                        backgroundColor: ctx => ctx.dataIndex === ventasDiariasData.length - 1 ? '#FF3E8F' : '#E0E0E0',
+                        borderColor: ctx => ctx.dataIndex === ventasDiariasData.length - 1 ? '#FF3E8F' : '#E0E0E0',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: value => '$ ' + value.toLocaleString()
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: context => '$ ' + context.parsed.y.toLocaleString()
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Ventas Mensuales
+            const ctxMensuales = document.getElementById('ventasMensualesChart').getContext('2d');
+            new Chart(ctxMensuales, {
+                type: 'bar',
+                data: {
+                    labels: ventasMensualesData.map(item => item.Mes),
+                    datasets: [{
+                        label: 'Ventas',
+                        data: ventasMensualesData.map(item => item.VentasMes),
+                        backgroundColor: ctx => ctx.dataIndex === ventasMensualesData.length - 1 ? '#FFE600' : '#E0E0E0',
+                        borderColor: ctx => ctx.dataIndex === ventasMensualesData.length - 1 ? '#FFE600' : '#E0E0E0',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: value => '$ ' + value.toLocaleString()
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: context => '$ ' + context.parsed.y.toLocaleString()
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

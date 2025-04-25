@@ -1,0 +1,179 @@
+﻿/* Estilos para DeliciaSoft - Tema Rosa y Blanco */
+
+/* Variables de colores */
+:root {
+    --color-rosa-principal: #ff80ab;
+    --color-rosa-claro: #fce4ec;
+    --color-rosa-hover: #f06292;
+    --color-rosa-oscuro: #e91e63;
+    --color-blanco: #ffffff;
+    --color-gris-claro: #f5f5f5;
+    --color-texto: #424242;
+    --color-borde: #e0e0e0;
+}
+
+/* Estilos generales para formularios y detalles */
+.delicia-card {
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    border: none;
+    overflow: hidden;
+}
+
+    .delicia-card .card-header {
+        background: linear-gradient(135deg, var(--color-rosa-principal), var(--color-rosa-oscuro));
+        color: var(--color-blanco);
+        border: none;
+        padding: 20px;
+    }
+
+    .delicia-card .card-body {
+        padding: 25px;
+        background-color: var(--color-blanco);
+    }
+
+/* Estilos para formularios */
+.delicia-form .form-control {
+    border-radius: 8px;
+    border: 1px solid var(--color-borde);
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+    .delicia-form .form-control:focus {
+        border-color: var(--color-rosa-principal);
+        box-shadow: 0 0 0 0.2rem rgba(255, 128, 171, 0.25);
+    }
+
+.delicia-form .form-label {
+    color: var(--color-texto);
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.delicia-form .input-group-text {
+    background-color: var(--color-rosa-claro);
+    border: 1px solid var(--color-borde);
+    color: var(--color-rosa-oscuro);
+    border-radius: 8px 0 0 8px;
+}
+
+.delicia-form .form-select {
+    border-radius: 8px;
+    border: 1px solid var(--color-borde);
+    padding: 10px 15px;
+    height: auto;
+}
+
+    .delicia-form .form-select:focus {
+        border-color: var(--color-rosa-principal);
+        box-shadow: 0 0 0 0.2rem rgba(255, 128, 171, 0.25);
+    }
+
+/* Estilos para botones */
+.btn-delicia-primary {
+    background-color: var(--color-rosa-principal);
+    border-color: var(--color-rosa-principal);
+    color: var(--color-blanco);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+    .btn-delicia-primary:hover, .btn-delicia-primary:focus {
+        background-color: var(--color-rosa-hover);
+        border-color: var(--color-rosa-hover);
+        box-shadow: 0 0 0 0.2rem rgba(255, 128, 171, 0.25);
+        color: var(--color-blanco);
+    }
+
+.btn-delicia-outline {
+    background-color: transparent;
+    border-color: var(--color-rosa-principal);
+    color: var(--color-rosa-principal);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+    .btn-delicia-outline:hover, .btn-delicia-outline:focus {
+        background-color: var(--color-rosa-claro);
+        border-color: var(--color-rosa-principal);
+        color: var(--color-rosa-oscuro);
+    }
+
+/* Estilo para detalles */
+.delicia-details dt {
+    font-weight: 600;
+    color: var(--color-rosa-oscuro);
+    padding: 10px 0;
+}
+
+.delicia-details dd {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-rosa-claro);
+    margin-bottom: 5px;
+}
+
+/* Estilos para el switch de estado */
+.form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+}
+
+    .form-switch .form-check-input:checked {
+        background-color: var(--color-rosa-principal);
+        border-color: var(--color-rosa-principal);
+    }
+
+    .form-switch .form-check-input:focus {
+        box-shadow: 0 0 0 0.2rem rgba(255, 128, 171, 0.25);
+    }
+
+/* Secciones de tarjetas */
+.delicia-section-card {
+    border-radius: 10px;
+    background-color: var(--color-blanco);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    border: 1px solid var(--color-borde);
+}
+
+    .delicia-section-card .card-header {
+        background-color: var(--color-rosa-claro);
+        color: var(--color-rosa-oscuro);
+        border-bottom: 1px solid var(--color-rosa-claro);
+        font-weight: 600;
+        padding: 15px 20px;
+        border-radius: 10px 10px 0 0;
+    }
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.delicia-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+    .delicia-card .card-header {
+        padding: 15px;
+    }
+
+    .delicia-card .card-body {
+        padding: 15px;
+    }
+}

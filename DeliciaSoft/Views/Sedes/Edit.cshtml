@@ -1,0 +1,128 @@
+﻿@model DeliciaSoft.Models.Sede
+
+@{
+    ViewData["Title"] = "Editar Sede";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="delicia-card">
+        <div class="card-header d-flex align-items-center">
+            <i class="fas fa-edit fa-2x me-3"></i>
+            <div>
+                <h1 class="h3 mb-0">Editar Sede</h1>
+                <p class="mb-0 small">Modifique los datos de la sede</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <form id="formEditar" asp-action="Edit" class="delicia-form needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <input type="hidden" asp-for="IdSede" />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="delicia-section-card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-info-circle me-2"></i> Información de la Sede
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="Nombre" class="form-label">Nombre</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-building"></i></span>
+                                        <input asp-for="Nombre" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Direccion" class="form-label">Dirección</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                        <input asp-for="Direccion" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <span asp-validation-for="Direccion" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Telefono" class="form-label">Teléfono</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                        <input asp-for="Telefono" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <span asp-validation-for="Telefono" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Horarios" class="form-label">Horarios</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                                        <input asp-for="Horarios" class="form-control" autocomplete="off" />
+                                    </div>
+                                    <span asp-validation-for="Horarios" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-delicia-outline">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a la Lista
+                    </a>
+                    <button type="submit" class="btn btn-delicia-primary">
+                        <i class="fas fa-save me-2"></i>Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.getElementById("formEditar").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const form = this;
+
+            // Validar campos obligatorios
+            const campos = ["Nombre", "Direccion", "Telefono", "Horarios"];
+            let valido = true;
+
+            campos.forEach(id => {
+                const input = document.getElementById(id);
+                if (input && input.value.trim() === "") {
+                    valido = false;
+                }
+            });
+
+            if (!valido) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Campos incompletos',
+                    text: 'Por favor completa todos los campos requeridos.'
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: '¿Deseas guardar los cambios?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, guardar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+}

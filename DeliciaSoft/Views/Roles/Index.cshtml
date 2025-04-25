@@ -1,0 +1,153 @@
+﻿@model IEnumerable<DeliciaSoft.ViewModels.Rol.RolViewModel>
+
+@{
+    ViewData["Title"] = "Roles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Administración de Roles</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+        <li class="breadcrumb-item active">Roles</li>
+    </ol>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-1"></i>
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-user-tag me-1"></i>
+                Roles del Sistema
+            </div>
+            <a asp-action="Create" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus"></i> Nuevo Rol
+            </a>
+        </div>
+        <div class="card-body">
+            <table id="tabla-roles" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr id="rol-row-@item.IdRol">
+                            <td>@item.IdRol</td>
+                            <td>@item.Nombre</td>
+                            <td>@item.Descripcion</td>
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input estado-switch" type="checkbox"
+                                           id="estado_@item.IdRol"
+                                           data-id="@item.IdRol"
+                                    @(item.Estado ? "checked" : "")
+                                    @(item.TieneUsuariosAsociados && item.Estado ? "disabled" : "") />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Details" asp-route-id="@item.IdRol" class="btn btn-info btn-sm">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@item.IdRol" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    @if (!item.TieneUsuariosAsociados)
+                                    {
+                                        <a asp-action="Delete" asp-route-id="@item.IdRol" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-danger btn-sm disabled"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="No se puede eliminar porque tiene usuarios asociados">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Inicializar DataTable
+            $('#tabla-roles').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json'
+                }
+            });
+
+            // Inicializar tooltips de Bootstrap
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+        });
+
+        $('.estado-switch').change(function() {
+            const rolId = $(this).data('id');
+            const isChecked = $(this).prop('checked');
+
+            // Store reference to the switch element for later use
+            const switchElement = $(this);
+
+            $.ajax({
+                url: '/Roles/ToggleEstado',
+                type: 'POST',
+                data: {
+                    id: rolId,
+                    estado: isChecked,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function(response) {
+                    console.log("Respuesta:", response);
+                    if (response.success) {
+                        // Use a more subtle notification instead of an alert
+                        toastr.success("Estado cambiado correctamente");
+                        // No need to reload the whole page
+                    } else {
+                        toastr.error('Error: ' + response.message);
+                        // Revert the switch without a page reload
+                        switchElement.prop('checked', !isChecked);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error AJAX:", xhr.responseText);
+                    toastr.error('Error al procesar la solicitud: ' + error);
+                    // Revert the switch
+                    switchElement.prop('checked', !isChecked);
+                }
+            });
+        });
+    </script>
+
+    @* Agregar el token anti-falsificación *@
+    @Html.AntiForgeryToken()
+}

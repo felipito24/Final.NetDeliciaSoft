@@ -1,0 +1,214 @@
+﻿/* DeliciaSoft - Estilos personalizados */
+
+:root {
+    --color-primary: #ff0066;
+    --color-secondary: #ffee00;
+    --color-dark: #333333;
+    --color-light: #f8f9fa;
+    --color-gray: #6c757d;
+    --color-success: #28a745;
+    --color-danger: #dc3545;
+    --font-family: 'Poppins', sans-serif;
+}
+
+/* Estilos generales */
+body {
+    font-family: var(--font-family);
+    background-color: #f5f5f5;
+    background-image: url('/img/background-pattern.png');
+    background-size: 200px;
+    background-repeat: repeat;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Estilos para tarjetas de autenticación */
+.card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.card-header {
+    background: white;
+    border-bottom: 3px solid var(--color-primary);
+    padding: 1.5rem 1rem;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #e6005c;
+        border-color: #e6005c;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba(230, 0, 92, 0.3);
+    }
+
+/* Formularios */
+.form-control, .form-select {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+}
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 0.2rem rgba(255, 0, 102, 0.25);
+    }
+
+.form-floating label {
+    padding: 0.75rem 1rem;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    transform: scale(0.85) translateY(-0.75rem) translateX(0.15rem);
+}
+
+/* Alertas */
+.alert {
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.alert-danger {
+    background-color: #fff2f5;
+    border-color: #ffccd6;
+    color: var(--color-danger);
+}
+
+.alert-success {
+    background-color: #f2fff5;
+    border-color: #ccffd6;
+    color: var(--color-success);
+}
+
+/* Login y Registro */
+.login-page, .register-page {
+    background: linear-gradient(135deg, #ff0066 0%, #ffee00 100%);
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Navbar */
+.navbar {
+    background-color: white !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: var(--color-primary) !important;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    color: var(--color-dark) !important;
+    transition: all 0.3s ease;
+}
+
+    .nav-link:hover {
+        color: var(--color-primary) !important;
+    }
+
+/* Footer */
+.footer {
+    background-color: white;
+    padding: 1.5rem 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Error 403 */
+.error {
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos específicos para las páginas de autenticación */
+.auth-banner {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    border-radius: 0 15px 15px 0;
+}
+
+    .auth-banner h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .auth-banner p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+
+.auth-banner-btn {
+    background-color: var(--color-secondary);
+    color: var(--color-dark);
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+    .auth-banner-btn:hover {
+        background-color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+/* Pantallas pequeñas */
+@media (max-width: 768px) {
+    .auth-banner {
+        border-radius: 0 0 15px 15px;
+        padding: 1.5rem;
+    }
+
+        .auth-banner h2 {
+            font-size: 2rem;
+        }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.card {
+    animation: fadeIn 0.5s ease;
+}

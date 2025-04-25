@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Bienvenido a DeliciaSoft</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Inicio</li>
+    </ol>
+
+
+<!-- Modal de Bienvenida -->
+<div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="welcomeModalLabel">¡Bienvenido a DeliciaSoft!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Has iniciado sesión correctamente en el sistema.</p>
+                <p>Última conexión: <span id="lastLoginDate">@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#notificationsModal">Ver Notificaciones</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Función para verificar si se deben mostrar los modales
+        $(document).ready(function () {
+            // Verificar si el parámetro showModals está presente en la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const showModals = urlParams.get('showModals');
+
+            if (showModals === 'true') {
+                // Mostrar el primer modal después de un pequeño retraso
+                setTimeout(function() {
+                    var welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
+                    welcomeModal.show();
+                }, 500);
+
+                // Limpiar la URL para eliminar el parámetro showModals
+                history.replaceState(null, '', window.location.pathname);
+            }
+        });
+
+        function marcarTodasLeidas() {
+            // Lógica para marcar todas las notificaciones como leídas
+            $('.list-group-item').addClass('read');
+            alert('Todas las notificaciones han sido marcadas como leídas');
+        }
+    </script>
+}

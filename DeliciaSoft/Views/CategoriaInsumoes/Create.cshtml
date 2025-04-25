@@ -1,0 +1,126 @@
+﻿@model DeliciaSoft.Models.CategoriaInsumo
+
+@{
+    ViewData["Title"] = "Crear Categoría";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-gradient-primary text-white py-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-cogs fa-2x me-3"></i>
+                <div>
+                    <h1 class="fs-4 mb-0">Crear Categoría de Insumo</h1>
+                    <p class="mb-0 small">Complete el formulario para registrar una nueva categoría</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body pt-4">
+            <form asp-action="Create" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-header bg-light">
+                                <i class="fas fa-box fa-2x me-2"></i> Información de la Categoría
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label asp-for="NombreCategoria" class="form-label">Nombre de la Categoría</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                        <input asp-for="NombreCategoria" class="form-control" placeholder="Ingrese el nombre de la categoría" />
+                                    </div>
+                                    <span asp-validation-for="NombreCategoria" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Descripcion" class="form-label">Descripción</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
+                                        <input asp-for="Descripcion" class="form-control" placeholder="Ingrese descripción" />
+                                    </div>
+                                    <span asp-validation-for="Descripcion" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="FechaRegistro" class="form-label">Fecha de Registro</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                        <input asp-for="FechaRegistro" type="date" class="form-control" />
+                                    </div>
+                                    <span asp-validation-for="FechaRegistro" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="CantidadInsumos" class="form-label">Cantidad de Insumos</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-cogs"></i></span>
+                                        <input asp-for="CantidadInsumos" class="form-control" placeholder="Ingrese cantidad de insumos" />
+                                    </div>
+                                    <span asp-validation-for="CantidadInsumos" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-header bg-light">
+                                <i class="fas fa-cogs me-2"></i> Configuración Adicional
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3 estado-toggle">
+                                    <label class="form-label">Estado:</label>
+                                    <label class="switch">
+                                        <input type="checkbox" name="Estado" value="true" />
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Volver
+                    </a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="fas fa-save me-2"></i>Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            // Form validation
+            (function () {
+                'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })()
+        });
+    </script>
+}

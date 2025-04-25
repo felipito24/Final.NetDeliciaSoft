@@ -1,0 +1,101 @@
+﻿@model DeliciaSoft.Models.CategoriaProducto
+
+@{
+    ViewData["Title"] = "Editar Categoría";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-gradient-primary text-white py-3">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-edit fa-2x me-3"></i>
+                <div>
+                    <h1 class="fs-4 mb-0">Editar Categoría</h1>
+                    <p class="mb-0 small">Modifique los datos de la categoría de producto</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body pt-4">
+            <form asp-action="Edit" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <input type="hidden" asp-for="IdCategoriaProducto" />
+
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-header bg-light">
+                        <i class="fas fa-info-circle me-2"></i> Información de la Categoría
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="NombreCategoria" class="form-label">Nombre de la Categoría</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                <input asp-for="NombreCategoria" class="form-control" placeholder="Ingrese nombre de la categoría" />
+                            </div>
+                            <span asp-validation-for="NombreCategoria" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DescripcionProducto" class="form-label">Descripción</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+                                <input asp-for="DescripcionProducto" class="form-control" placeholder="Descripción de la categoría" />
+                            </div>
+                            <span asp-validation-for="DescripcionProducto" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-header bg-light">
+                        <i class="fas fa-cog me-2"></i> Configuración
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="Estado" class="form-label">Estado</label>
+                            <div class="form-check form-switch">
+                                <input asp-for="Estado" class="form-check-input" />
+                                <label class="form-check-label" for="Estado">Categoría activa</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Regresar
+                    </a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="fas fa-save me-2"></i>Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function() {
+            // Validación del formulario
+            (function () {
+                'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })()
+        });
+    </script>
+}

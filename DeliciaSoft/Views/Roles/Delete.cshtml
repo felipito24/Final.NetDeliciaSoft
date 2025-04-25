@@ -1,0 +1,89 @@
+﻿@model DeliciaSoft.ViewModels.Rol.RolDetalleViewModel
+
+@{
+    ViewData["Title"] = "Eliminar Rol";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Eliminar Rol</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+        <li class="breadcrumb-item"><a asp-action="Index">Roles</a></li>
+        <li class="breadcrumb-item active">Eliminar</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card mb-4">
+                <div class="card-header bg-danger text-white">
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    Confirmar Eliminación
+                </div>
+                <div class="card-body">
+                    @if (Model.TieneUsuariosAsociados)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-ban"></i>
+                            <strong>No se puede eliminar este rol</strong> porque tiene usuarios asociados.
+                            Para eliminarlo, primero debe reasignar los usuarios a otro rol.
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Volver
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-circle"></i>
+                            ¿Está seguro que desea eliminar este rol? Esta acción no se puede deshacer.
+                        </div>
+
+                        <dl class="row">
+                            <dt class="col-sm-3">ID:</dt>
+                            <dd class="col-sm-9">@Model.IdRol</dd>
+
+                            <dt class="col-sm-3">Nombre:</dt>
+                            <dd class="col-sm-9">@Model.Nombre</dd>
+
+                            <dt class="col-sm-3">Descripción:</dt>
+                            <dd class="col-sm-9">@Model.Descripcion</dd>
+
+                            <dt class="col-sm-3">Estado:</dt>
+                            <dd class="col-sm-9">
+                                @if (Model.Estado)
+                                {
+                                    <span class="badge bg-success">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Inactivo</span>
+                                }
+                            </dd>
+                        </dl>
+
+                        @if (Model.Permisos.Any())
+                        {
+                            <div class="alert alert-danger">
+                                <strong>Advertencia:</strong> Este rol tiene @Model.Permisos.Count() permisos asignados que también serán desactivados.
+                            </div>
+                        }
+
+                        <form asp-action="Delete" method="post">
+                            <input type="hidden" name="id" value="@Model.IdRol" />
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                                <a asp-action="Index" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left"></i> Cancelar
+                                </a>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

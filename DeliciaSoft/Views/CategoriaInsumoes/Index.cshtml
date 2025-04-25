@@ -1,0 +1,121 @@
+﻿@model IEnumerable<DeliciaSoft.Models.CategoriaInsumo>
+
+@{
+    ViewData["Title"] = "Categoría de Insumos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid p-3">
+    <div class="card shadow">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <img src="~/img/logo.png" alt="Logo" style="width: 60px; height: 60px;" class="me-2">
+                <h4 class="mb-0">Categorías de Insumos</h4>
+            </div>
+            <div>
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Nueva Categoría
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            @if (TempData["Mensaje"] != null)
+            {
+                <div class="alert alert-info">@TempData["Mensaje"]</div>
+            }
+
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Fecha de Registro</th>
+                            <th>Cantidad de Insumos</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="categoriaInsumo-row-@item.IdCategoriaInsumos" class="@(item.Estado != true ? "text-muted" : "")">
+                                <td>@item.NombreCategoria</td>
+                                <td>@item.FechaRegistro?.ToShortDateString()</td>
+                                <td>@item.CantidadInsumos</td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input estado-switch" type="checkbox"
+                                               id="estado_@item.IdCategoriaInsumos"
+                                               data-id="@item.IdCategoriaInsumos"
+                                        @(item.Estado == true ? "checked" : "")>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Edit" asp-route-id="@item.IdCategoriaInsumos" class="btn btn-sm btn-warning">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.IdCategoriaInsumos" class="btn btn-sm btn-info">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.IdCategoriaInsumos" class="btn btn-sm btn-danger">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.estado-switch').change(function () {
+                const categoriaId = $(this).data('id');
+                const isChecked = $(this).prop('checked');
+                const token = $('input[name="__RequestVerificationToken"]').val();
+
+                $.ajax({
+                    url: '@Url.Action("CambiarEstado", "CategoriaInsumos")',
+                    type: 'POST',
+                    data: {
+                        id: categoriaId,
+                        nuevoEstado: isChecked,
+                        __RequestVerificationToken: token
+                    },
+                    success: function (response) {
+                        const row = $('#categoriaInsumo-row-' + categoriaId);
+                        if (response.success) {
+                            if (!isChecked) {
+                                row.addClass('text-muted');
+                            } else {
+                                row.removeClass('text-muted');
+                            }
+                        } else {
+                            alert('Error al cambiar el estado: ' + response.message);
+                            $('#estado_' + categoriaId).prop('checked', !isChecked);
+                        }
+                    },
+                    error: function () {
+                        alert('Error al procesar la solicitud');
+                        $('#estado_' + categoriaId).prop('checked', !isChecked);
+                    }
+                });
+            });
+
+            $("a[asp-action='Delete']").on("click", function (event) {
+                var confirmed = confirm("¿Está seguro que desea eliminar esta categoría?");
+                if (!confirmed) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+
+    @Html.AntiForgeryToken()
+}

@@ -1,0 +1,80 @@
+﻿@model DeliciaSoft.Models.Usuario
+
+@{
+    ViewData["Title"] = "Eliminar Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid p-3">
+    <div class="modal fade show d-block" id="deleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Eliminar Usuario</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 4rem;"></i>
+                    </div>
+                    <p class="text-center">¿Está seguro que desea eliminar el usuario <strong>@Model.Nombre @Model.Apellido</strong>?</p>
+                    <p class="text-center text-muted">Esta acción no se puede deshacer.</p>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Nombre:</dt>
+                                <dd class="col-sm-8">@Model.Nombre @Model.Apellido</dd>
+
+                                <dt class="col-sm-4">Correo:</dt>
+                                <dd class="col-sm-8">@Model.Correo</dd>
+
+                                <dt class="col-sm-4">Rol:</dt>
+                                <dd class="col-sm-8">@Model.IdRolNavigation.Rol1</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Documento:</dt>
+                                <dd class="col-sm-8">@Model.TipoDocumento @Model.NumeroDocumento</dd>
+
+                                <dt class="col-sm-4">Celular:</dt>
+                                <dd class="col-sm-8">@Model.Celular</dd>
+
+                                <dt class="col-sm-4">Estado:</dt>
+                                <dd class="col-sm-8">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="estado" @(Model.Estado == true ? "checked" : "") disabled>
+                                        <label class="form-check-label" for="estado">
+                                            @(Model.Estado == true ? "Activo" : "Inactivo")
+                                        </label>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="IdUsuario" />
+                        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+</div>
+
+@section Scripts {
+    <script>
+        // Código para cerrar el modal si se hace clic fuera
+        $(document).ready(function() {
+            $('#deleteModal').click(function(e) {
+                if ($(e.target).is('#deleteModal')) {
+                    window.location.href = '@Url.Action("Index")';
+                }
+            });
+        });
+    </script>
+}

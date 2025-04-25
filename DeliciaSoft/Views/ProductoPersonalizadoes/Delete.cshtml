@@ -1,0 +1,93 @@
+﻿@model DeliciaSoft.Models.ProductoPersonalizado
+
+@{
+    ViewData["Title"] = "Eliminar Producto Personalizado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-danger text-white d-flex align-items-center">
+            <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+            <div>
+                <h1 class="fs-4 mb-0">Eliminar Producto Personalizado</h1>
+                <p class="mb-0 small">¿Está seguro que desea eliminar este producto personalizado?</p>
+            </div>
+        </div>
+        <div class="card-body pt-4">
+            <h4>Detalle</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3">Producto Base</dt>
+                <dd class="col-sm-9">@Model.IdProductoNavigation?.NombreProducto</dd>
+
+                <dt class="col-sm-3">Toppings</dt>
+                <dd class="col-sm-9">@Model.ToppingsNavigation?.NombreInsumo</dd>
+
+                <dt class="col-sm-3">Cantidad</dt>
+                <dd class="col-sm-9">@Model.Cantidad</dd>
+
+                <dt class="col-sm-3">Total</dt>
+                <dd class="col-sm-9">@Model.Total</dd>
+
+                <dt class="col-sm-3">Descripción</dt>
+                <dd class="col-sm-9">@Model.Descripcion</dd>
+
+                <dt class="col-sm-3">Decoración</dt>
+                <dd class="col-sm-9">@Model.Decoracion</dd>
+
+                <dt class="col-sm-3">Temas o Motivos</dt>
+                <dd class="col-sm-9">@Model.TemasOmotivos</dd>
+
+                <dt class="col-sm-3">Mensaje</dt>
+                <dd class="col-sm-9">@Model.Mensaje</dd>
+
+                <dt class="col-sm-3">Diseño Personalizado</dt>
+                <dd class="col-sm-9">@Model.DisenioPersonalizado</dd>
+
+                @* Puedes descomentar esto si quieres mostrar la imagen de referencia *@
+                @*
+                <dt class="col-sm-3">Imagen de Referencia</dt>
+                <dd class="col-sm-9">@Model.ImagenReferencia</dd>
+                *@
+            </dl>
+
+            <form id="formEliminar" asp-action="Delete" class="mt-4">
+                <input type="hidden" asp-for="IdProductoPersonalizado" />
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a la lista
+                    </a>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i>Confirmar Eliminación
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.getElementById("formEliminar").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "No podrás revertir esta acción.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit(); // Enviar el formulario si se confirma
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,118 @@
+﻿@model DeliciaSoft.Models.Usuario
+
+@{
+    ViewData["Title"] = "Detalles de Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="delicia-card">
+        <div class="card-header d-flex align-items-center">
+            <i class="fas fa-user-circle fa-2x me-3"></i>
+            <div>
+                <h1 class="h3 mb-0">Detalles de Usuario</h1>
+                <p class="mb-0 small">Información completa del usuario</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="delicia-details">
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Nombre)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Nombre)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Apellido)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Apellido)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Correo)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Correo)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Contrasena)
+                    </dt>
+                    <dd class="col-sm-9">
+                        ••••••••••
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Direccion)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Direccion)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Barrio)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Barrio)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Ciudad)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Ciudad)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.TipoDocumento)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.TipoDocumento)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.NumeroDocumento)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.NumeroDocumento)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.FechaNacimiento)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.FechaNacimiento)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Celular)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.Celular)
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.Estado)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @if (Model.Estado == true)
+                        {
+                            <span class="badge bg-success">Activo</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Inactivo</span>
+                        }
+                    </dd>
+                    <dt class="col-sm-3">
+                        @Html.DisplayNameFor(model => model.IdRolNavigation)
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Html.DisplayFor(model => model.IdRolNavigation.Rol1)
+                    </dd>
+                </dl>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-delicia-outline">
+                    <i class="fas fa-arrow-left me-2"></i>Regresar
+                </a>
+                <a asp-action="Edit" asp-route-id="@Model?.IdUsuario" class="btn btn-delicia-primary">
+                    <i class="fas fa-edit me-2"></i>Editar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

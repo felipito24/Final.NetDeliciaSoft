@@ -1,0 +1,99 @@
+﻿@model DeliciaSoft.Models.Proveedor
+
+@{
+    ViewData["Title"] = "Eliminar Proveedor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-danger text-white d-flex align-items-center">
+            <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+            <div>
+                <h1 class="fs-4 mb-0">Eliminar Proveedor</h1>
+                <p class="mb-0 small">¿Está seguro que desea eliminar este proveedor?</p>
+            </div>
+        </div>
+        <div class="card-body pt-4">
+            <div class="alerta-error mb-3" style="display: @(TempData["ErrorMessage"] != null ? "block" : "none")">
+                @TempData["ErrorMessage"]
+            </div>
+
+            <div class="detalle-content">
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        <span class="detalle-label">Tipo de proveedor:</span>
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Model.TipoProveedor
+                    </dd>
+
+                    <dt class="col-sm-3">
+                        <span class="detalle-label">Correo:</span>
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Model.Correo
+                    </dd>
+
+                    <dt class="col-sm-3">
+                        <span class="detalle-label">Celular:</span>
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Model.Celular
+                    </dd>
+
+                    <dt class="col-sm-3">
+                        <span class="detalle-label">Dirección:</span>
+                    </dt>
+                    <dd class="col-sm-9">
+                        @Model.Direccion
+                    </dd>
+
+                    <dt class="col-sm-3">
+                        <span class="detalle-label">Estado:</span>
+                    </dt>
+                    <dd class="col-sm-9">
+                        @(Model.Estado == true ? "Activo" : "Inactivo")
+                    </dd>
+                </dl>
+            </div>
+
+            <form asp-action="Delete" class="mt-4">
+                <input type="hidden" asp-for="IdProveedor" />
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i>Confirmar Eliminación
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.getElementById("formEliminar").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "No podrás revertir esta acción.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit(); // Enviar el formulario si se confirma
+                }
+            });
+        });
+    </script>
+}

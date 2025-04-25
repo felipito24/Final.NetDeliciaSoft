@@ -1,0 +1,120 @@
+﻿@model IEnumerable<DeliciaSoft.Models.Cliente>
+
+@{
+    ViewData["Title"] = "Clientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid p-3">
+    <div class="card shadow">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <img src="~/img/logo.png" alt="Logo" style="width: 60px; height: 60px;" class="me-2">
+                <h4 class="mb-0">Clientes</h4>
+            </div>
+            <div>
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Nuevo Cliente
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Ciudad</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="cliente-row-@item.IdCliente" class="@(item.Estado != true ? "text-muted" : "")">
+                                <td>@item.IdCliente</td>
+                                <td>@item.Nombre</td>
+                                <td>@item.Apellido</td>
+                                <td>@item.Correo</td>
+                                <td>@item.Celular</td>
+                                <td>@item.Ciudad</td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input estado-switch" type="checkbox"
+                                               id="estado_@item.IdCliente"
+                                               data-id="@item.IdCliente"
+                                        @(item.Estado == true ? "checked" : "")>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Edit" asp-route-id="@item.IdCliente" class="btn btn-sm btn-warning">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.IdCliente" class="btn btn-sm btn-info">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.IdCliente" class="btn btn-sm btn-danger">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Implementación del cambio de estado
+            $('.estado-switch').change(function() {
+                const clienteId = $(this).data('id');
+                const isChecked = $(this).prop('checked');
+
+                // Obtener el token anti-falsificación
+                const token = $('input[name="__RequestVerificationToken"]').val();
+
+                $.ajax({
+                    url: '/Clientes/ToggleEstado',
+                    type: 'POST',
+                    data: {
+                        id: clienteId,
+                        estado: isChecked,
+                        __RequestVerificationToken: token
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            const row = $('#cliente-row-' + clienteId);
+                            if (!isChecked) {
+                                row.addClass('text-muted');
+                            } else {
+                                row.removeClass('text-muted');
+                            }
+                        } else {
+                            alert('Error al cambiar el estado: ' + response.message);
+                            // Revertir el cambio en el switch
+                            $('#estado_' + clienteId).prop('checked', !isChecked);
+                        }
+                    },
+                    error: function() {
+                        alert('Error al procesar la solicitud');
+                        // Revertir el cambio en el switch
+                        $('#estado_' + clienteId).prop('checked', !isChecked);
+                    }
+                });
+            });
+        });
+    </script>
+
+    @Html.AntiForgeryToken()
+}
